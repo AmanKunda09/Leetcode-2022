@@ -1,34 +1,24 @@
 class Solution {
     public String getPermutation(int n, int k) {
-        int pos = 0;
-    List<Integer> numbers = new ArrayList<>();
-    int[] factorial = new int[n+1];
-    StringBuilder sb = new StringBuilder();
-    
-    // create an array of factorial lookup
-    int sum = 1;
-    factorial[0] = 1;
-    for(int i=1; i<=n; i++){
-        sum *= i;
-        factorial[i] = sum;
+        int fact=1;
+        List<Integer> temp=new ArrayList<>();
+        for(int i=1;i<n;i++)
+        {
+            fact*=i;
+            temp.add(i);
+        }
+        temp.add(n);
+        String ans="";
+        k=k-1;
+        while(true)
+        {
+            ans+=temp.get(k/fact);
+            temp.remove(k/fact);
+            if(temp.size()==0)
+                break;
+            k=k%fact;
+            fact=fact/temp.size();
+        }
+        return ans;
     }
-    // factorial[] = {1, 1, 2, 6, 24, ... n!}
-    
-    // create a list of numbers to get indices
-    for(int i=1; i<=n; i++){
-        numbers.add(i);
-    }
-    // numbers = {1, 2, 3, 4}
-    
-    k--;
-    
-    for(int i = 1; i <= n; i++){
-        int index = k/factorial[n-i];
-        sb.append(String.valueOf(numbers.get(index)));
-        numbers.remove(index);
-        k-=index*factorial[n-i];
-    }
-    
-    return String.valueOf(sb);
-}
 }
